@@ -6,8 +6,9 @@ public class Tank {
     private int x,y;
     private Dir dir = Dir.DOWN;
     final int SPEED = 5;
+    private boolean living = true;
 
-    private static final int Width = ResourceMgr.tankD.getWidth(),Height = ResourceMgr.tankD.getHeight();
+    public static final int Width = ResourceMgr.tankD.getWidth(),Height = ResourceMgr.tankD.getHeight();
 
 
     private boolean moveing =false;
@@ -43,6 +44,9 @@ public class Tank {
     }
 
     void paint(Graphics g){
+        if (!living){
+            tf.tanks.remove(this);
+        }
         System.out.println("move +"+x+" +"+y);
         switch (dir){
             case LEFT:
@@ -81,5 +85,9 @@ public class Tank {
         int bx = this.x+Tank.Width/2-Bullet.Width/2;
         int by = this.y+Tank.Height/2-Bullet.Height/2;
         tf.bulletList.add(new Bullet(bx,by,this.dir,this.tf));
+    }
+
+    public void die(){
+        living=false;
     }
 }

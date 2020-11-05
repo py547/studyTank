@@ -8,10 +8,27 @@ public class Bullet {
 
     private  int x,y;
     private Dir dir;
-    boolean live= true;
+    boolean living = true;
     private  TankFrame tf=null;
 
-    public Bullet(int x, int y, Dir dir,TankFrame tf) {
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public Bullet(int x, int y, Dir dir, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -19,7 +36,7 @@ public class Bullet {
     }
 
     void paint(Graphics g){
-        if (!live){
+        if (!living){
             tf.bulletList.remove(this);
         }
         switch (dir){
@@ -52,7 +69,19 @@ public class Bullet {
                 break;
         }
         if (x<0 || x>TankFrame.Game_width||y<0||y>TankFrame.Game_height){
-            live=false;
+            living =false;
         }
+    }
+
+    public void collideWith(Tank tank) {
+        Rectangle rect1 = new Rectangle(this.x,this.y,Width,Height);
+        Rectangle rect2 = new Rectangle(tank.getX(),tank.getY(),Tank.Width,Tank.Height);
+        if (rect1.intersects(rect2)){
+            tank.die();
+            this.die();
+        }
+    }
+    private void die() {
+        this.living = false;
     }
 }

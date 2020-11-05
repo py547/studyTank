@@ -3,7 +3,7 @@ package com.mashibing.tank;
 import java.awt.*;
 
 public class Bullet {
-    private static final int SPEED = 1;
+    private static final int SPEED = 10;
     public static final int Width = ResourceMgr.bulletD.getWidth(),Height = ResourceMgr.bulletD.getHeight();
 
     private  int x,y;

@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TankFrame extends Frame {
-    Tank myTank=new Tank(200,200,Dir.DOWN,this);
+    Tank myTank=new Tank(200,400,Dir.DOWN,this);
     List<Bullet> bulletList = new ArrayList<>();
+    List<Tank> tanks = new ArrayList<>();
+
     Bullet bullet = new Bullet(300,300,myTank.getDir(),this);
     static final int Game_width = 800 , Game_height = 600;
     public TankFrame() {
@@ -55,6 +57,9 @@ public class TankFrame extends Frame {
             for (int i = 0; i <bulletList.size() ; i++) {
                 bulletList.get(i).paint(g);
             }
+            for (int i = 0; i <tanks.size() ; i++) {
+                tanks.get(i).paint(g);
+            }
 
            /* x +=10;
             y +=10;*/
@@ -70,19 +75,15 @@ public class TankFrame extends Frame {
                 switch(key){
                     case KeyEvent.VK_LEFT:
                         BL=true;
-                        BR=false;
                         break;
                     case KeyEvent.VK_RIGHT:
                         BR=true;
-                        BL=false;
                         break;
                     case KeyEvent.VK_UP:
                         BU=true;
-                        BD=false;
                         break;
                     case KeyEvent.VK_DOWN:
                         BD=true;
-                        BU=false;
                         break;
                 }
                 setMainTankDir();

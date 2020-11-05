@@ -10,8 +10,7 @@ public class Bullet {
     private Dir dir;
     boolean living = true;
     private  TankFrame tf=null;
-
-
+    private Group group = Group.Bad;
     public int getX() {
         return x;
     }
@@ -28,11 +27,12 @@ public class Bullet {
         this.y = y;
     }
 
-    public Bullet(int x, int y, Dir dir, TankFrame tf) {
+    public Bullet(int x, int y, Dir dir,Group group, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.tf =tf;
+        this.group =group;
     }
 
     void paint(Graphics g){
@@ -74,11 +74,13 @@ public class Bullet {
     }
 
     public void collideWith(Tank tank) {
+        if(this.group == tank.getGroup()) {return;}
         Rectangle rect1 = new Rectangle(this.x,this.y,Width,Height);
         Rectangle rect2 = new Rectangle(tank.getX(),tank.getY(),Tank.Width,Tank.Height);
         if (rect1.intersects(rect2)){
             tank.die();
             this.die();
+            tf.explodes.add(new Explode(x,y,tf));
         }
     }
     private void die() {

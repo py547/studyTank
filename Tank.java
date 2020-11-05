@@ -1,26 +1,38 @@
 package com.mashibing.tank;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Tank {
     private int x,y;
     private Dir dir = Dir.DOWN;
-    final int SPEED = 5;
+    final int SPEED = 2;
     private boolean living = true;
+    private Random random = new Random();
+    private Group group = Group.Bad;
 
     public static final int Width = ResourceMgr.tankD.getWidth(),Height = ResourceMgr.tankD.getHeight();
 
 
-    private boolean moveing =false;
+    private boolean moveing =true;
 
     private  TankFrame tf=null;
 
-    public Tank(int x, int y, Dir dir,TankFrame tf) {
+    public Tank(int x, int y, Dir dir,TankFrame tf,Group group) {
         super();
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.tf =tf;
+        this.group =group;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public Dir getDir() {
@@ -78,13 +90,24 @@ public class Tank {
             case DOWN:
                 y+=SPEED;
                 break;
+
         }
+        if (this.group == Group.Bad && random.nextInt(100) > 95) {
+            this.fire();
+        }
+        if (this.group == Group.Bad && random.nextInt(100) > 95) {
+            randomDir();
+        }
+    }
+
+    private void randomDir() {
+            this.dir = Dir.values()[random.nextInt(4)];
     }
 
     public void fire(){
         int bx = this.x+Tank.Width/2-Bullet.Width/2;
         int by = this.y+Tank.Height/2-Bullet.Height/2;
-        tf.bulletList.add(new Bullet(bx,by,this.dir,this.tf));
+        tf.bulletList.add(new Bullet(bx,by,this.dir,this.group,this.tf));
     }
 
     public void die(){

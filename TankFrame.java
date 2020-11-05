@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TankFrame extends Frame {
-    Tank myTank=new Tank(200,400,Dir.DOWN,this);
+    Tank myTank=new Tank(200,400,Dir.DOWN,this,Group.Good);
     List<Bullet> bulletList = new ArrayList<>();
     List<Tank> tanks = new ArrayList<>();
+    List<Explode> explodes = new ArrayList<>();
 
-    Bullet bullet = new Bullet(300,300,myTank.getDir(),this);
-    static final int Game_width = 800 , Game_height = 600;
+    static final int Game_width = 1080 , Game_height = 960;
+
     public TankFrame() {
         this.setSize(Game_width, Game_height);
         setResizable(false);
@@ -52,6 +53,7 @@ public class TankFrame extends Frame {
             g.setColor(Color.WHITE);
             g.drawString("子弹的数量:" + bulletList.size(), 10, 60);
             g.drawString("敌人的数量:" + tanks.size(), 10, 80);
+            g.drawString("爆炸的数量:" + explodes.size(), 10, 100);
 
             g.setColor(c);
 
@@ -61,6 +63,9 @@ public class TankFrame extends Frame {
             }
             for (int i = 0; i <tanks.size() ; i++) {
                 tanks.get(i).paint(g);
+            }
+            for (int i = 0; i <explodes.size() ; i++) {
+                explodes.get(i).paint(g);
             }
             for (int i = 0; i < bulletList.size(); i++) {
                 for (int j = 0; j <tanks.size() ; j++) {

@@ -3,14 +3,17 @@ package com.mashibing.tank;
 import java.awt.*;
 
 public class Bullet {
-    private static final int SPEED = 10;
+    private static final int SPEED = Integer.parseInt((String)PropertyMgr.get("bulletSpeed"));
     public static final int Width = ResourceMgr.bulletD.getWidth(),Height = ResourceMgr.bulletD.getHeight();
+
+
 
     private  int x,y;
     private Dir dir;
     boolean living = true;
     private  TankFrame tf=null;
     private Group group = Group.Bad;
+    Rectangle rect=new Rectangle();
     public int getX() {
         return x;
     }
@@ -33,6 +36,10 @@ public class Bullet {
         this.dir = dir;
         this.tf =tf;
         this.group =group;
+        rect.x = this.x;
+        rect.y = this.y;
+        rect.width = Width;
+        rect.height = Height;
     }
 
     void paint(Graphics g){
@@ -68,6 +75,9 @@ public class Bullet {
                 y += SPEED;
                 break;
         }
+        //update rect
+        rect.x = this.x;
+        rect.y = this.y;
         if (x<0 || x>TankFrame.Game_width||y<0||y>TankFrame.Game_height){
             living =false;
         }
@@ -75,9 +85,7 @@ public class Bullet {
 
     public void collideWith(Tank tank) {
         if(this.group == tank.getGroup()) {return;}
-        Rectangle rect1 = new Rectangle(this.x,this.y,Width,Height);
-        Rectangle rect2 = new Rectangle(tank.getX(),tank.getY(),Tank.Width,Tank.Height);
-        if (rect1.intersects(rect2)){
+        if (tank.rect.intersects(rect)){
             tank.die();
             this.die();
             int ex = tank.getX()+Tank.Width/2-Explode.Width/2;

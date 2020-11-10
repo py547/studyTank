@@ -6,10 +6,11 @@ import java.util.Random;
 public class Tank {
     private int x,y;
     private Dir dir = Dir.DOWN;
-    final int SPEED = 5;
+    final int SPEED = Integer.parseInt((String)PropertyMgr.get("tankSpeed"));
     private boolean living = true;
     private Random random = new Random();
     private Group group = Group.Bad;
+    Rectangle rect=new Rectangle();
 
     public static final int Width = ResourceMgr.goodTankD.getWidth(),Height = ResourceMgr.goodTankD.getHeight();
 
@@ -25,6 +26,10 @@ public class Tank {
         this.dir = dir;
         this.tf =tf;
         this.group =group;
+        rect.x = this.x;
+        rect.y = this.y;
+        rect.width = Width;
+        rect.height = Height;
     }
 
     public Group getGroup() {
@@ -99,13 +104,16 @@ public class Tank {
             randomDir();
         }
         boundsCheck();
+        //update rect
+        rect.x = this.x;
+        rect.y = this.y;
     }
 
     private void boundsCheck() {
-        if (this.x<0) x=0;
-        if (this.y<30) x=0;
-        if (this.x>TankFrame.Game_width-Tank.Width) x=TankFrame.Game_width-Tank.Width;
-        if (this.y>TankFrame.Game_height-Tank.Height) y=TankFrame.Game_height-Tank.Height;
+        if (this.x<0) {x=0;}
+        if (this.y<30) {x=0;}
+        if (this.x>TankFrame.Game_width-Tank.Width) {x=TankFrame.Game_width-Tank.Width;}
+        if (this.y>TankFrame.Game_height-Tank.Height) {y=TankFrame.Game_height-Tank.Height;}
     }
 
     private void randomDir() {

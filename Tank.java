@@ -1,15 +1,16 @@
 package com.mashibing.tank;
 
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
 public class Tank {
-    private int x,y;
-    private Dir dir = Dir.DOWN;
+     int x,y;
+     Dir dir = Dir.DOWN;
     final int SPEED = Integer.parseInt((String)PropertyMgr.get("tankSpeed"));
     private boolean living = true;
     private Random random = new Random();
-    private Group group = Group.Bad;
+     Group group = Group.Bad;
     Rectangle rect=new Rectangle();
 
     public static final int Width = ResourceMgr.goodTankD.getWidth(),Height = ResourceMgr.goodTankD.getHeight();
@@ -17,7 +18,8 @@ public class Tank {
 
     private boolean moveing =true;
 
-    private  TankFrame tf=null;
+    TankFrame tf=null;
+    FireStrategy fs;
 
     public Tank(int x, int y, Dir dir,TankFrame tf,Group group) {
         super();
@@ -30,6 +32,18 @@ public class Tank {
         rect.y = this.y;
         rect.width = Width;
         rect.height = Height;
+
+        if (group==Group.Good) {
+            String name = (String)PropertyMgr.get("goodFs");
+            System.out.println(name);
+            try {
+                fs=(FireStrategy)Class.forName(name).getDeclaredConstructor().newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            /* fs=new FourDirFireStrategy();*/
+        }
+        else  {fs=new DefaultFireStrategy();}
     }
 
     public Group getGroup() {
@@ -64,7 +78,6 @@ public class Tank {
         if (!living){
             tf.tanks.remove(this);
         }
-        System.out.println("move +"+x+" +"+y);
         switch (dir){
             case LEFT:
                 g.drawImage(this.group == Group.Good? ResourceMgr.goodTankL : ResourceMgr.badTankL, x, y, null);break;
@@ -121,9 +134,7 @@ public class Tank {
     }
 
     public void fire(){
-        int bx = this.x+Tank.Width/2-Bullet.Width/2;
-        int by = this.y+Tank.Height/2-Bullet.Height/2;
-        tf.bulletList.add(new Bullet(bx,by,this.dir,this.group,this.tf));
+        fs.fire(this);
     }
 
     public void die(){

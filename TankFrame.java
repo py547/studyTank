@@ -9,10 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TankFrame extends Frame {
-    Tank myTank=new Tank(200,400,Dir.DOWN,this,Group.Good);
-    List<Bullet> bulletList = new ArrayList<>();
-    List<Tank> tanks = new ArrayList<>();
-    List<Explode> explodes = new ArrayList<>();
+   GameModel gm = new GameModel();
 
     static final int Game_width = 1080 , Game_height = 960;
 
@@ -49,32 +46,9 @@ public class TankFrame extends Frame {
 
         @Override
         public void paint(Graphics g){
-            Color c = g.getColor();
-            g.setColor(Color.WHITE);
-            g.drawString("子弹的数量:" + bulletList.size(), 10, 60);
-            g.drawString("敌人的数量:" + tanks.size(), 10, 80);
-            g.drawString("爆炸的数量:" + explodes.size(), 10, 100);
-
-            g.setColor(c);
-
-            myTank.paint(g);
-            for (int i = 0; i <bulletList.size() ; i++) {
-                bulletList.get(i).paint(g);
-            }
-            for (int i = 0; i <tanks.size() ; i++) {
-                tanks.get(i).paint(g);
-            }
-            for (int i = 0; i <explodes.size() ; i++) {
-                explodes.get(i).paint(g);
-            }
-            for (int i = 0; i < bulletList.size(); i++) {
-                for (int j = 0; j <tanks.size() ; j++) {
-                    bulletList.get(i).collideWith(tanks.get(j));
-                }
-            }
-           /* x +=10;
-            y +=10;*/
+            gm.paint(g);
           }
+
         class MyKeyListener extends KeyAdapter{
             Boolean BL = false;
             Boolean BR = false;
@@ -119,13 +93,14 @@ public class TankFrame extends Frame {
                         break;
 
                     case KeyEvent.VK_CONTROL:
-                        myTank.fire();
+                        gm.getMyTank().fire();
                         break;
                 }
                 setMainTankDir();
             }
 
             private void setMainTankDir() {
+                Tank myTank = gm.getMyTank();
                 myTank.setMoveing(true);
 
                 if(BL) {myTank.setDir(Dir.LEFT);}

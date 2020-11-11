@@ -18,15 +18,15 @@ public class Tank {
 
     private boolean moveing =true;
 
-    TankFrame tf=null;
+    GameModel gm=null;
     FireStrategy fs;
 
-    public Tank(int x, int y, Dir dir,TankFrame tf,Group group) {
+    public Tank(int x, int y, Dir dir,GameModel gm,Group group) {
         super();
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.tf =tf;
+        this.gm =gm;
         this.group =group;
         rect.x = this.x;
         rect.y = this.y;
@@ -76,7 +76,7 @@ public class Tank {
 
     void paint(Graphics g){
         if (!living){
-            tf.tanks.remove(this);
+            gm.tanks.remove(this);
         }
         switch (dir){
             case LEFT:
@@ -124,7 +124,7 @@ public class Tank {
 
     private void boundsCheck() {
         if (this.x<0) {x=0;}
-        if (this.y<30) {x=0;}
+        if (this.y<30) {y=30;}
         if (this.x>TankFrame.Game_width-Tank.Width) {x=TankFrame.Game_width-Tank.Width;}
         if (this.y>TankFrame.Game_height-Tank.Height) {y=TankFrame.Game_height-Tank.Height;}
     }

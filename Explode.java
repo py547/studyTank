@@ -21,4 +21,14 @@ public class Explode extends GameObject{
             gm.remove(this);
         };
     }
+
+    @Override
+    public int getWidth() {
+        return Width;
+    }
+
+    @Override
+    public int getHeight() {
+        return Height;
+    }
 }

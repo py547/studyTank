@@ -5,11 +5,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class TankFrame extends Frame {
-   GameModel gm = new GameModel();
 
     static final int Game_width = 1080 , Game_height = 960;
 
@@ -46,7 +44,7 @@ public class TankFrame extends Frame {
 
         @Override
         public void paint(Graphics g){
-            gm.paint(g);
+            GameModel.getInstance().paint(g);
           }
 
         class MyKeyListener extends KeyAdapter{
@@ -93,14 +91,14 @@ public class TankFrame extends Frame {
                         break;
 
                     case KeyEvent.VK_CONTROL:
-                        gm.getMyTank().fire();
+                        GameModel.getInstance().getMyTank().fire();
                         break;
                 }
                 setMainTankDir();
             }
 
             private void setMainTankDir() {
-                Tank myTank = gm.getMyTank();
+                Tank myTank = GameModel.getInstance().getMyTank();
                 myTank.setMoveing(true);
 
                 if(BL) {myTank.setDir(Dir.LEFT);}

@@ -1,7 +1,6 @@
 package com.mashibing.tank;
 
 import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
 public class Tank extends GameObject{
@@ -19,17 +18,15 @@ public class Tank extends GameObject{
 
     private boolean moveing =true;
 
-    GameModel gm=null;
     FireStrategy fs;
 
-    public Tank(int x, int y, Dir dir,GameModel gm,Group group) {
+    public Tank(int x, int y, Dir dir,Group group) {
         super();
         this.x = x;
         this.y = y;
         this.oldX = x;
         this.oldY = y;
         this.dir = dir;
-        this.gm =gm;
         this.group =group;
         rect.x = this.x;
         rect.y = this.y;
@@ -47,6 +44,7 @@ public class Tank extends GameObject{
             /* fs=new FourDirFireStrategy();*/
         }
         else  {fs=new DefaultFireStrategy();}
+        GameModel.getInstance().add(this);
     }
 
     public Group getGroup() {
@@ -88,7 +86,7 @@ public class Tank extends GameObject{
     @Override
     public void paint(Graphics g){
         if (!living){
-            gm.remove(this);
+            GameModel.getInstance().remove(this);
         }
         switch (dir){
             case LEFT:
@@ -102,6 +100,16 @@ public class Tank extends GameObject{
         }
 
        move();
+    }
+
+    @Override
+    public int getWidth() {
+        return Width;
+    }
+
+    @Override
+    public int getHeight() {
+        return Height;
     }
 
     private void move() {

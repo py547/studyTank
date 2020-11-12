@@ -11,9 +11,8 @@ public class Bullet extends GameObject{
     private  int x,y;
     private Dir dir;
     boolean living = true;
-    private GameModel gm=null;
     private Group group = Group.Bad;
-    Rectangle rect=new Rectangle();
+    public Rectangle rect=new Rectangle();
     public int getX() {
         return x;
     }
@@ -30,24 +29,23 @@ public class Bullet extends GameObject{
         this.y = y;
     }
 
-    public Bullet(int x, int y, Dir dir,Group group, GameModel gm) {
+    public Bullet(int x, int y, Dir dir,Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.gm =gm;
         this.group =group;
         rect.x = this.x;
         rect.y = this.y;
         rect.width = Width;
         rect.height = Height;
 
-        gm.add(this);
+        GameModel.getInstance().add(this);
     }
 
     @Override
     public void paint(Graphics g){
         if (!living){
-            gm.remove(this);
+            GameModel.getInstance().remove(this);
         }
         switch (dir){
             case LEFT:
@@ -60,6 +58,16 @@ public class Bullet extends GameObject{
                 g.drawImage(ResourceMgr.bulletD,x,y,null);break;
         }
         move();
+    }
+
+    @Override
+    public int getWidth() {
+        return Width;
+    }
+
+    @Override
+    public int getHeight() {
+        return Height;
     }
 
     private void move() {
@@ -93,10 +101,10 @@ public class Bullet extends GameObject{
             this.die();
             int ex = tank.getX()+Tank.Width/2-Explode.Width/2;
             int ey = tank.getY()+Tank.Height/2-Explode.Height/2;
-            gm.add(new Explode(ex,ey,gm));
+            GameModel.getInstance().add(new Explode(ex,ey,GameModel.getInstance()));
         }
     }
-    private void die() {
+    public void die() {
         this.living = false;
     }
 }

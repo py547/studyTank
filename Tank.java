@@ -4,14 +4,15 @@ import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
-public class Tank {
+public class Tank extends GameObject{
      int x,y;
+     int oldX,oldY;
      Dir dir = Dir.DOWN;
     final int SPEED = Integer.parseInt((String)PropertyMgr.get("tankSpeed"));
     private boolean living = true;
     private Random random = new Random();
      Group group = Group.Bad;
-    Rectangle rect=new Rectangle();
+    public Rectangle rect=new Rectangle();
 
     public static final int Width = ResourceMgr.goodTankD.getWidth(),Height = ResourceMgr.goodTankD.getHeight();
 
@@ -25,6 +26,8 @@ public class Tank {
         super();
         this.x = x;
         this.y = y;
+        this.oldX = x;
+        this.oldY = y;
         this.dir = dir;
         this.gm =gm;
         this.group =group;
@@ -58,6 +61,14 @@ public class Tank {
         return dir;
     }
 
+    public Rectangle getRect() {
+        return rect;
+    }
+
+    public void setRect(Rectangle rect) {
+        this.rect = rect;
+    }
+
     public void setDir(Dir dir) {
         this.dir = dir;
     }
@@ -74,9 +85,10 @@ public class Tank {
         this.moveing = moveing;
     }
 
-    void paint(Graphics g){
+    @Override
+    public void paint(Graphics g){
         if (!living){
-            gm.tanks.remove(this);
+            gm.remove(this);
         }
         switch (dir){
             case LEFT:
@@ -94,6 +106,7 @@ public class Tank {
 
     private void move() {
         if(!moveing){ return;}
+        oldX=x;oldY=y;
         switch(dir){
 
             case LEFT:
@@ -139,5 +152,10 @@ public class Tank {
 
     public void die(){
         living=false;
+    }
+
+    public void stop(){
+      x=oldX;
+      y=oldY;
     }
 }

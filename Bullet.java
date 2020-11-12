@@ -2,7 +2,7 @@ package com.mashibing.tank;
 
 import java.awt.*;
 
-public class Bullet {
+public class Bullet extends GameObject{
     private static final int SPEED = Integer.parseInt((String)PropertyMgr.get("bulletSpeed"));
     public static final int Width = ResourceMgr.bulletD.getWidth(),Height = ResourceMgr.bulletD.getHeight();
 
@@ -41,12 +41,13 @@ public class Bullet {
         rect.width = Width;
         rect.height = Height;
 
-        gm.bulletList.add(this);
+        gm.add(this);
     }
 
-    void paint(Graphics g){
+    @Override
+    public void paint(Graphics g){
         if (!living){
-            gm.bulletList.remove(this);
+            gm.remove(this);
         }
         switch (dir){
             case LEFT:
@@ -92,7 +93,7 @@ public class Bullet {
             this.die();
             int ex = tank.getX()+Tank.Width/2-Explode.Width/2;
             int ey = tank.getY()+Tank.Height/2-Explode.Height/2;
-            gm.explodes.add(new Explode(ex,ey,gm));
+            gm.add(new Explode(ex,ey,gm));
         }
     }
     private void die() {

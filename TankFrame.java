@@ -126,7 +126,6 @@ public class TankFrame extends Frame {
                     myTank.setMoveing(false);
                 }
             }
-            
             private void setMainTankDirs() {
                 myTank.setMoveing(true);
 
@@ -139,6 +138,8 @@ public class TankFrame extends Frame {
                     myTank.setMoveing(false);
                 }
             }
+            
+     
 
 
     }
